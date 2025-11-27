@@ -71,16 +71,16 @@ class HostedGateway extends AbstractGateway
 
     public function purchase(array $parameters = [])
     {
-        return $this->createRequest('\Omnipay\Mpgs\Message\PurchaseRequest', $parameters);
+        return $this->createRequest(\Omnipay\Mpgs\Message\PurchaseRequest::class, $parameters);
     }
 
     public function completePurchase(array $parameters = [])
     {
-        return $this->createRequest('\Omnipay\Mpgs\Message\CompletePurchaseRequest', $parameters);
+        return $this->createRequest(\Omnipay\Mpgs\Message\CompletePurchaseRequest::class, $parameters);
     }
 
     public function checkGateway(array $parameters = [])
     {
-        return $this->createRequest('\Omnipay\Mpgs\Message\CheckGatewayRequest', $parameters);
+        return $this->createRequest(\Omnipay\Mpgs\Message\CheckGatewayRequest::class, $parameters);
     }
 }

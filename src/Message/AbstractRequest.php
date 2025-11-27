@@ -7,7 +7,7 @@ namespace Omnipay\Mpgs\Message;
  */
 abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
 {
-    protected $apiVersion = 69;
+    protected $apiVersion = 100;
 
     protected $operation = '';
 
@@ -127,6 +127,16 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
     public function setOrderId($value)
     {
         return $this->setParameter('orderId', $value);
+    }
+
+    public function getNetAmount()
+    {
+        return $this->getParameter('netAmount');
+    }
+
+    public function setNetAmount($value)
+    {
+        return $this->setParameter('netAmount', $value);
     }
 
     protected function getBaseData()

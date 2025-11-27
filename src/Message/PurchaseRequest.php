@@ -2,6 +2,8 @@
 
 namespace Omnipay\Mpgs\Message;
 
+use Omnipay\Common\Exception\InvalidRequestException;
+
 /**
  * Mpgs Purchase Request
  *
@@ -15,33 +17,42 @@ class PurchaseRequest extends AbstractRequest
 
     public function getData()
     {
-        $this->validate('currency', 'amount', 'returnUrl', 'transactionId');
+        $this->validate('currency', 'returnUrl', 'transactionId');
+
+        if ($this->getParameter('amount') === null && $this->getParameter('netAmount') === null) {
+            throw new InvalidRequestException("The amount or netAmount parameter is required");
+        }
 
         return array_merge($this->getBaseData(), [
             'apiOperation' => 'INITIATE_CHECKOUT',
+            'correlationId' => $this->getTransactionId(),
             'order' => [
-                'id' => $this->getTransactionId(),
+                'id' => $this->getOrderId(),
                 'amount' => $this->getAmount(),
+                'netAmount' => $this->getNetAmount(),
+               // 'merchantCharge' => [
+               //     'type' => 'SURCHARGE',
+               // ],
                 'currency' => $this->getCurrency(),
-                'description' => "Paying for the order - {$this->getTransactionReference()}",
-                'reference' => $this->getTransactionReference(),
-                'invoiceNumber' => $this->getTransactionReference(),
+                'description' => "Paying for the order - {$this->getOrderId()}",
+                'reference' => $this->getTransactionId(),
+                'invoiceNumber' => $this->getTransactionId(),
                 'notificationUrl' => $this->getNotifyUrl(),
             ],
             'customer' => [
-                'email' => $this->getCard()->getEmail(),
-                'mobilePhone' => $this->getCard()->getBillingPhone(),
-                'firstName' => $this->getCard()->getFirstName(),
-                'lastName' => $this->getCard()->getLastName(),
+                'email' => $this->getCard()?->getEmail(),
+                'mobilePhone' => $this->getCard()?->getBillingPhone(),
+                'firstName' => $this->getCard()?->getFirstName(),
+                'lastName' => $this->getCard()?->getLastName(),
             ],
             'billing' => [
                 'address' => [
-                    'city' => $this->getCard()->getBillingCity(),
-                    'country' => $this->getCard()->getBillingCountry(),
-                    'postcodeZip' => $this->getCard()->getBillingPostcode(),
-                    'stateProvince' => $this->getCard()->getBillingState(),
-                    'street' => $this->getCard()->getBillingAddress1(),
-                    'street2' => $this->getCard()->getBillingAddress2(),
+                    'city' => $this->getCard()?->getBillingCity(),
+                    'country' => $this->getCard()?->getBillingCountry(),
+                    'postcodeZip' => $this->getCard()?->getBillingPostcode(),
+                    'stateProvince' => $this->getCard()?->getBillingState(),
+                    'street' => $this->getCard()?->getBillingAddress1(),
+                    'street2' => $this->getCard()?->getBillingAddress2(),
                 ],
             ],
         ]);
