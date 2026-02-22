@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Omnipay\Mpgs\Message;
 
@@ -9,16 +9,19 @@ use Omnipay\Common\Message\RequestInterface;
  */
 class AbstractResponse extends \Omnipay\Common\Message\AbstractResponse
 {
+    protected array $headers;
+
+    protected int $status;
+
     /**
      * @param RequestInterface $request
-     * @param $data
-     * @param $headers
-     * @param $status
+     * @param array $data
+     * @param array $headers
+     * @param int $status
      */
-    public function __construct(RequestInterface $request, $data, $headers, $status)
+    public function __construct(RequestInterface $request, array $data, array $headers, int $status)
     {
-        $this->request = $request;
-        $this->data = $data;
+        parent::__construct($request, $data);
         $this->headers = $headers;
         $this->status = $status;
     }
