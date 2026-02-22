@@ -45,11 +45,11 @@ class AbstractResponse extends \Omnipay\Common\Message\AbstractResponse
 
     public function getMessage()
     {
-        return isset($this->data['result']) ? $this->data['result'] : null;
+        return $this->data['result'] ?? null;
     }
 
     public function isMessageSuccess()
     {
-        return $this->getMessage() == 'SUCCESS';
+        return $this->getMessage() === 'SUCCESS';
     }
 }

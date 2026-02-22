@@ -19,17 +19,17 @@ class CompletePurchaseResponse extends \Omnipay\Mpgs\Message\AbstractResponse
 
     public function getOrderId()
     {
-        return isset($this->data['id']) ? $this->data['id'] : null;
+        return $this->data['id'] ?? null;
     }
 
     public function getOrderStatus()
     {
-        return isset($this->data['status']) ? $this->data['status'] : null;
+        return $this->data['status'] ?? null;
     }
 
     public function getOrderReference()
     {
-        return isset($this->data['reference']) ? $this->data['reference'] : null;
+        return $this->data['reference'] ?? null;
     }
 
     public function isCaptured()
